@@ -9,27 +9,24 @@ function Saved() {
 
   const [allResumes, setAllResumes] = useState([])
   const [searchKey, setSearchKey] = useState("")
+  const [dummyAllResumes,setDummyAllResumes] = useState([])
   console.log(searchKey);
 
   useEffect(() => {
     searchKey === "" ? getAPIResumes() : searchCandidate()
   }, [searchKey])
 
-  const searchCandidate = async () => {
-    const response = await getAllResunmeApi()
-    if (response.status === 200) {
-      setAllResumes(response.data.filter(item => item.job.toLowerCase().includes(searchKey.toLowerCase())))
-    }
+  const searchCandidate =  () => {  
+      setAllResumes(dummyAllResumes.filter(item => item.job.toLowerCase().includes(searchKey.toLowerCase())))
   }
 
-  useEffect(() => {
-    getAPIResumes()
-  }, [])
+
 
   const getAPIResumes = async () => {
     const response = await getAllResunmeApi()
     if (response.status === 200) {
       setAllResumes(response.data)
+      setDummyAllResumes(response.data)
     }
   }
 

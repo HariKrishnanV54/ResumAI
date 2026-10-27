@@ -42,7 +42,7 @@ function View() {
             {/* Download icon */}
             <button style={{ color: "brown" }} className='btn'><FaDownload />Download CV</button>
             {/* Edit */}
-            <Edit />
+            <Edit resumeDetails={resume}  setResumeDetails={setResume}/>
             {/* All Resume */}
             {/* <Link style={{ color: "brown" }} to={'/all-resume'} className='btn'><FaEdit />All Resumes</Link> */}
             {/* Download History */}
