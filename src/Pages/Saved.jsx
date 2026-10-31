@@ -2,15 +2,23 @@ import React, { useEffect, useState } from 'react'
 import { MdDelete } from 'react-icons/md'
 import { Link } from 'react-router-dom'
 import { deleteAllResunmeApi, getAllResunmeApi } from '../service/apiService'
-import { resumes } from 'react-dom/server'
-import { FaSearch } from 'react-icons/fa'
+import { FaSearch, FaTrash, FaBackward, FaForward } from 'react-icons/fa'
 
 function Saved() {
 
   const [allResumes, setAllResumes] = useState([])
   const [searchKey, setSearchKey] = useState("")
   const [dummyAllResumes,setDummyAllResumes] = useState([])
-  console.log(searchKey);
+  // console.log(searchKey);
+
+
+const [currentpage,setCurrentPage] = useState(1)
+    const rowsPerPage = 4
+    const lastIndexCurrentPage = currentpage*rowsPerPage
+    const firstIndexCurrentPage = lastIndexCurrentPage-rowsPerPage
+    const currentResumes = allResumes.slice(firstIndexCurrentPage,lastIndexCurrentPage)
+    const totalPage = Math.ceil(allResumes.length/rowsPerPage)
+
 
   useEffect(() => {
     searchKey === "" ? getAPIResumes() : searchCandidate()
@@ -61,25 +69,32 @@ function Saved() {
           </tr>
         </thead>
         <tbody>
-          {
-            allResumes?.length > 0 ?
-              allResumes?.map((resumes, index) => (
-                <tr key={resumes?.id}>
-                  <td>{index + 1}</td>
-                  <td><Link to={`/resume/${resumes?.id}`}>{resumes.fullname.toUpperCase()}</Link></td>
-                  <td>{resumes?.job.toUpperCase()}</td>
-                  <td><button onClick={() => { removeResume(resumes.id) }} className='btn btn-danger'><MdDelete /></button></td>
-                </tr>
-              ))
-              :
-              <tr>
-                <td colSpan="4" className="text-center">NO RESUME ADDED YET</td>
-              </tr>
-          }
-        </tbody>
-      </table>
-    </div>
-  )
-}
-
-export default Saved
+         {
+                    currentResumes?.length>0?
+                    currentResumes?.map((resume,index)=>(
+                      <tr key={resume?.id}>
+                    <td>{index+1}</td>
+                    <td><Link to={`/resume/${resume?.id}`}>{resume?.fullname}</Link></td>
+                    <td>{resume?.job}</td>
+                    <td><button onClick={()=>removeResume(resume?.id)} className='btn btn-danger'><FaTrash /></button></td>
+                  </tr>
+                    ))
+                    :
+                    <tr><td colSpan="4"><p>NO RESUMES ADDED YET</p></td></tr>
+                  }
+                </tbody>
+              </table>
+              <div className='d-flex align-items-center'>
+                <button className='btn ' onClick={()=>setCurrentPage(currentpage-1)} disabled={currentpage==1}>
+                  <FaBackward/>
+                </button>
+                {currentpage} of {totalPage}
+                <button className='btn'  onClick={()=>setCurrentPage(currentpage+1)} disabled={currentpage==totalPage || totalPage==0}>
+                  <FaForward />
+                </button>
+              </div>
+            </div>
+          )
+        }
+        
+        export default Saved

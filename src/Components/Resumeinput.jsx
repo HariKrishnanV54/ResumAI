@@ -165,7 +165,7 @@ function ResumeInput({ resumeDetails, setResumeDetails }) {
     if (fullname && location && job && phone && email && github && linkedin && degree && college && year && skills && skills.length > 0 && summary) {
       const response = await saveResumeApi(resumeDetails);
       console.log(response);
-      if (response.status === 201) {
+      if (response.status === 200) {
         toast.success("Resume added successfully!");
         const resumeId = response.data.id;
         navigate(`/resume/${resumeId}`);

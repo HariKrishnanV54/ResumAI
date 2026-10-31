@@ -13,6 +13,7 @@ import { CgOverflow } from 'react-icons/cg';
 import { FaXmark } from 'react-icons/fa6';
 import jobRole from '../assets/jobRole.json';
 import { toast } from 'react-toastify';
+import { editAllResunmeApi } from '../service/apiService';
 
 const style = {
   position: 'absolute',
@@ -51,8 +52,30 @@ const addSkill = (skill)=>{
   }else{
       toast.warning("Please enter a valid skills")
     }
-
 }
+
+const handleEditResume = async () => {
+  //make api call to update resume whenever the update button clicks
+    const { fullname, location, job, phone, email, github, linkedin, degree, college, year, skills, summary } = resumeDetails;
+  
+    if (fullname && location && job && phone && email && github && linkedin && degree && college && year && skills && skills.length > 0 && summary) {
+      //make api call
+      const response = await editAllResunmeApi(resumeDetails.id,resumeDetails);
+      // console.log(response);
+      if (response.status === 200) {
+        toast.success("Resume added successfully!");
+        setTimeout(()=>{
+        handleClose()
+        },2500);
+      }
+    } else {
+      toast.warning("Please fill the form completely");
+    }
+  };
+
+
+
+ 
 
   return (
     <div>
@@ -73,14 +96,14 @@ const addSkill = (skill)=>{
               <h3>Personal Details</h3>
               <div className='row p-3'>
                 <TextField 
-                  value={resumeDetails?.fullname || ''} 
+                  value={resumeDetails?.fullname} 
                   onChange={e => setResumeDetails({ ...resumeDetails, fullname: e.target.value })} 
                   id="standard-basic-fullname" 
                   label="Full Name" 
                   variant="standard" 
                 />
                 <TextField 
-                  value={resumeDetails?.location || ''} 
+                  value={resumeDetails?.location} 
                   onChange={e => setResumeDetails({ ...resumeDetails, location: e.target.value })} 
                   id="standard-basic-loc" 
                   label="Location" 
@@ -91,7 +114,7 @@ const addSkill = (skill)=>{
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={resumeDetails?.job || ''}
+                    value={resumeDetails?.job}
                     onChange={e => setResumeDetails({ ...resumeDetails, job: e.target.value })}
                     label="Job"
                   >
@@ -195,7 +218,7 @@ const addSkill = (skill)=>{
             </div>
 
             {/* Update Button */}
-            <button className='btn btn-primary mt-3'>Update CV</button>
+            <button onClick={handleEditResume} className='btn btn-primary mt-3'>Update CV</button>
 
           </Box>
         </Box>

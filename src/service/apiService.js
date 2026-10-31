@@ -20,4 +20,21 @@ export const deleteAllResunmeApi=async(resumeId)=>{
    return await axiosService("DELETE", `/resumes/${resumeId}`, {});
 }
 
+// update resume API: called by edit component when update button clicks
+export const editAllResunmeApi=async(resumeId,resumeDetails)=>{
+   return await axiosService("PUT", `/resumes/${resumeId}`, resumeDetails);
+}
+
+
+// Download resume API: called by edit component when update button clicks
+export const downloadResunmeApi=async(resumeDetails)=>{
+   return await axiosService("POST", `/downlaods`, resumeDetails);
+}
+
+// Get Download resume API: called by downlaod component when page load in browser
+export const getALLDownloadResunmeApi=async()=>{
+   return await axiosService("GET", `/downlaods`, {});
+}
+
+
 export default saveResumeApi
